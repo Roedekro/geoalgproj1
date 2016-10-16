@@ -48,6 +48,17 @@ public class Main {
 			else if(s[0].equals("exit")) {
 				return;
 			}
+			else if(s[0].equals("testlp1")) {
+				MbC_CH m = new MbC_CH();
+				Point2D p = new Point2D(3,6,1);
+				ArrayList<Point2D> pList = new ArrayList<Point2D>();
+				pList.add(new Point2D(1,2,1));
+				pList.add(new Point2D(3,4,1));
+				pList.add(new Point2D(5,4,1));
+				
+				Point2D ret = m.lp1(pList, p, 2);
+				System.out.println("LP1 returned a="+ret.x + " and b="+ret.y);
+			}
 			else {
 				
 				// Get filename
@@ -80,7 +91,8 @@ public class Main {
 					time = System.currentTimeMillis() - time;
 					System.out.println("QH_CH took " + time + " milliseconds to complete");
 					outFile(ret,"qhChOutput.txt");
-				}
+				}				
+				
 				else {
 					
 				}	
