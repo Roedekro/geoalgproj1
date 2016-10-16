@@ -56,7 +56,7 @@ public class Main {
 				pList.add(new Point2D(3,4,1));
 				pList.add(new Point2D(5,4,1));
 				
-				Point2D ret = m.lp1(pList, p, 2);
+				Point2D ret = m.lp1(pList,4, p, 2);
 				System.out.println("LP1 returned a="+ret.x + " and b="+ret.y);
 			}
 			else {
