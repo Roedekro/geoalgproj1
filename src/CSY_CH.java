@@ -1,7 +1,4 @@
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 public class CSY_CH {
 
@@ -12,7 +9,7 @@ public class CSY_CH {
      * @param p2 The point with the largest x-coordinate in P.
      * @return The upper hull of P.
      */
-    public static List<Point2D> findUpperHull(ArrayList<Point2D> p,
+    public static List<Point2D> findUpperHull(List<Point2D> p,
                                               Point2D p1, Point2D p2) {
         // Discard any point that lies below the line going through p1 and p2
         for (Point2D pointInP : p) {
@@ -49,14 +46,52 @@ public class CSY_CH {
         List<Point2D> rightPoints = new ArrayList<>();
         for (Point2D pointInP : p) {
             // Check which list the point should be partitioned into
-            if (pointInP.x <= maxPoint.x) {
-
-            } else {
-
+            if (pointInP.x < maxPoint.x) {
+                leftPoints.add(pointInP);
+            } else if (pointInP.x > maxPoint.x) {
+                rightPoints.add(pointInP);
             }
         }
 
-        return null;
+        // Prune the left points for pairs with slopes larger than the median slope
+        Map<Pair,Double> leftPointsWithSlopes = getSlopeForAllPairs(leftPoints);
+        for (Map.Entry<Pair,Double> leftPointWithSlope : leftPointsWithSlopes.entrySet()) {
+            if (leftPointWithSlope.getValue() > medianOfMedians) {
+                leftPoints.remove(leftPointWithSlope.getKey().p1);
+            }
+        }
+
+        // Prune the right points for pairs with slopes smaller than the median slope
+        Map<Pair,Double> rightPointsWithSlopes = getSlopeForAllPairs(rightPoints);
+        for (Map.Entry<Pair,Double> rightPointWithSlope : rightPointsWithSlopes.entrySet()) {
+            if (rightPointWithSlope.getValue() < medianOfMedians) {
+                rightPoints.remove(rightPointWithSlope.getKey().p2);
+            }
+        }
+
+        // Recurse on both halves and merge the result
+        List<Point2D> leftRecur = findUpperHull(leftPoints, p1, maxPoint);
+        List<Point2D> rightRecur = findUpperHull(rightPoints, maxPoint, p2);
+        leftRecur.addAll(rightRecur);
+        return leftRecur;
+    }
+
+    private static Map<Pair,Double> getSlopeForAllPairs(List<Point2D> points) {
+        Map<Pair,Double> pairSlopes = new HashMap<>();
+
+        for (int i = 0; i < points.size() - 1; i++) {
+            for (int j = i + 1; j < points.size(); j++) {
+                if (points.get(i).x < points.get(j).x) {
+                    double slope = (points.get(j).y - points.get(i).y) / (points.get(j).x - points.get(i).x);
+                    pairSlopes.put(new Pair(points.get(i), points.get(j)), slope);
+                } else {
+                    double slope = (points.get(i).y - points.get(j).y) / (points.get(i).x - points.get(j).x);
+                    pairSlopes.put(new Pair(points.get(j), points.get(i)), slope);
+                }
+            }
+        }
+
+        return pairSlopes;
     }
 
     /**
@@ -82,7 +117,7 @@ public class CSY_CH {
     private static List<PairWithMedian> createPointPars(List<Point2D> points) {
         Collections.shuffle(points); // Shuffle the list for randomness
         List<PairWithMedian> pointPairs = new ArrayList<>();
-        for (int i = 0; i < points.size(); i = i+2) {
+        for (int i = 0; i < points.size(); i += 2) {
             // Store the pair such that the point with the lowest x-coordinate is on the left
             if (points.get(i).x < points.get(i+1).x) {
                 pointPairs.add(new PairWithMedian(points.get(i), points.get(i+1)));
@@ -129,6 +164,37 @@ public class CSY_CH {
         @Override
         public int compareTo(PairWithMedian other) {
             return Double.compare(median, other.median);
+        }
+
+    }
+
+    private static class Pair {
+
+        public Point2D p1;
+        public Point2D p2;
+
+        public Pair(Point2D p1, Point2D p2) {
+            this.p1 = p1;
+            this.p2 = p2;
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+
+            Pair pair = (Pair) o;
+
+            if (!p1.equals(pair.p1)) return false;
+            return p2.equals(pair.p2);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = p1.hashCode();
+            result = 31 * result + p2.hashCode();
+            return result;
         }
 
     }
