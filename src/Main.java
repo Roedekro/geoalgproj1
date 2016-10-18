@@ -91,7 +91,15 @@ public class Main {
 					time = System.currentTimeMillis() - time;
 					System.out.println("QH_CH took " + time + " milliseconds to complete");
 					outFile(ret,"qhChOutput.txt");
-				}				
+				}
+				else if(s[0].equals("c")) {
+					long time = System.currentTimeMillis();
+					MbC_CH mbc = new MbC_CH();
+					ArrayList<Point2D> ret = mbc.findHull(input);
+					time = System.currentTimeMillis() - time;
+					System.out.println("MbC_CH took " + time + " milliseconds to complete");
+					outFile(ret,"MbCOutput.txt");
+				}
 				
 				else {
 					

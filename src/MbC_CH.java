@@ -6,17 +6,22 @@ public class MbC_CH {
 	public ArrayList<Point2D> findHull(ArrayList<Point2D> pList) {
 		
 		ArrayList<Point2D> upper = findUpperHull(pList);
-		ArrayList<Point2D> lower = findLowerHull(pList);
+		/*ArrayList<Point2D> lower = findLowerHull(pList);
 		upper.remove(upper.size()-1);		
 		lower.remove(lower.size()-1);
-		upper.addAll(lower);
+		upper.addAll(lower);*/
 		return upper;
 	}
 	
 	public ArrayList<Point2D> findUpperHull(ArrayList<Point2D> pList) {
 		
 		// Use selection to find median element with value m
-		float m = 10;
+		Selection select = new Selection();
+		int goal = pList.size() / 2;
+		if(pList.size() % 2 != 0) goal = goal + 1;
+		float m = select.select(pList, goal);
+		
+		// Split into left and right according to the median
 		ArrayList<Point2D> leftList = new ArrayList<Point2D>();
 		ArrayList<Point2D> rightList = new ArrayList<Point2D>();
 		for(Point2D p : pList) {
@@ -28,24 +33,41 @@ public class MbC_CH {
 		Point2D left = bridge.get(0);
 		Point2D right = bridge.get(1);
 		
-		ArrayList<Point2D> remove = new ArrayList<Point2D>();
+		System.out.println("Found bridge between "+left.id+ " and "+right.id);
 		
 		// Prune all points beneath the bridge
 		for(Point2D p : pList) {
-			if(p.x == left.x && p.id != left.id) leftList.remove(p);
-			if(p.x > left.x && p.x <= right.x ) {
-				remove.add(p);
+			if(p.x >= left.x && p.id != left.id && p.x <= m) leftList.remove(p);
+			if(p.x > m && p.id != right.id && p.x <= right.x ) {
+				rightList.remove(p);
 			}
-		}	
-		rightList.removeAll(remove);	
+		}		
 		
-		// MULIGT PROBLEM - ER BROEN TILFØJET ELLER TIL STEDE I BEGGE?
+		// MULIGT PROBLEM - ER BROEN TILFØJET ELLER TIL STEDE I BEGGE? Fixed, tror jeg.
+		ArrayList<Point2D> ret = new ArrayList<Point2D>();
+		if(leftList.size() == 1) {
+			System.out.println("Added "+left.id);
+			ret.add(left);
+		}
+		else {
+			System.out.println("Recursing left on size "+leftList.size());
+			ret.addAll(findUpperHull(leftList));
+		}
+		if(rightList.size() == 1) {
+			System.out.println("Added "+right.id);
+			ret.add(right);
+		}
+		else {
+			System.out.println("Recursing right on size "+rightList.size());
+			ret.addAll(findUpperHull(rightList));
+		}
 		
+		/*
 		ArrayList<Point2D> retLeft = findUpperHull(leftList);
-		ArrayList<Point2D> retRight = findUpperHull(rightList);
-		
+		ArrayList<Point2D> retRight = findUpperHull(rightList);	
 		retLeft.addAll(retRight);
-		return retLeft;
+		*/ 
+		return ret;
 	}
 	
 	
@@ -76,6 +98,8 @@ public class MbC_CH {
 			}		
 		}
 		
+		System.out.println("For m="+m+" found a="+a+" and b="+b);
+		
 		Point2D left = null;
 		Point2D right = null;
 		for(Point2D p : pList) {
@@ -94,14 +118,6 @@ public class MbC_CH {
 		ret.add(right);
 		return ret;
 	}
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	
 	/*
