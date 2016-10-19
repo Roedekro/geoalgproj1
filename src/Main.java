@@ -1,14 +1,6 @@
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 
@@ -101,8 +93,13 @@ public class Main {
 					outFile(ret,"MbCOutput.txt");
 				}
 				
-				else {
-					
+				else if(s[0].equals("g")) {
+					long time = System.currentTimeMillis();
+					List<Point2D> ret = CSY_CH.findHull(input);
+					time = System.currentTimeMillis() - time;
+					System.out.println("CSY_CH took " + time + " milliseconds to complete");
+					outFile(ret, "csyChOutput.txt");
+
 				}	
 			}
 		}
@@ -184,7 +181,7 @@ public class Main {
 		
 	}
 	
-	public static void outFile(ArrayList<Point2D> list, String s) throws IOException {
+	public static void outFile(List<Point2D> list, String s) throws IOException {
 		
 		BufferedWriter wr = new BufferedWriter(new OutputStreamWriter(
 				new FileOutputStream(s)));
