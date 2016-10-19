@@ -1,15 +1,21 @@
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class MbC_CH {
 
+	// Tried 0.00001, but didnt work. Also tried 0.00005 and 0.0001
+	public float ERROR_MARGIN = 0.001f;
+	
 	public ArrayList<Point2D> findHull(ArrayList<Point2D> pList) {
 		
 		ArrayList<Point2D> upper = findUpperHull(pList);
-		/*ArrayList<Point2D> lower = findLowerHull(pList);
-		upper.remove(upper.size()-1);		
-		lower.remove(lower.size()-1);
-		upper.addAll(lower);*/
+		//System.out.println("LOWER HULL! ===========");
+		ArrayList<Point2D> lower = findLowerHull(pList);
+		if(upper.size() > 0) upper.remove(upper.size()-1);		
+		if(lower.size() > 0) lower.remove(0);
+		Collections.reverse(lower);
+		upper.addAll(lower);
 		return upper;
 	}
 	
@@ -33,7 +39,7 @@ public class MbC_CH {
 		Point2D left = bridge.get(0);
 		Point2D right = bridge.get(1);
 		
-		System.out.println("Found bridge between "+left.id+ " and "+right.id);
+		//System.out.println("Found bridge between "+left.id+ " and "+right.id);
 		
 		// Prune all points beneath the bridge
 		for(Point2D p : pList) {
@@ -43,30 +49,24 @@ public class MbC_CH {
 			}
 		}		
 		
-		// MULIGT PROBLEM - ER BROEN TILFØJET ELLER TIL STEDE I BEGGE? Fixed, tror jeg.
 		ArrayList<Point2D> ret = new ArrayList<Point2D>();
 		if(leftList.size() == 1) {
-			System.out.println("Added "+left.id);
+			//System.out.println("Added "+left.id);
 			ret.add(left);
 		}
 		else {
-			System.out.println("Recursing left on size "+leftList.size());
+			//System.out.println("Recursing left on size "+leftList.size()+" for "+left.id);
 			ret.addAll(findUpperHull(leftList));
 		}
 		if(rightList.size() == 1) {
-			System.out.println("Added "+right.id);
+			//System.out.println("Added "+right.id);
 			ret.add(right);
 		}
 		else {
-			System.out.println("Recursing right on size "+rightList.size());
+			//System.out.println("Recursing right on size "+rightList.size() +" for "+right.id);
 			ret.addAll(findUpperHull(rightList));
 		}
-		
-		/*
-		ArrayList<Point2D> retLeft = findUpperHull(leftList);
-		ArrayList<Point2D> retRight = findUpperHull(rightList);	
-		retLeft.addAll(retRight);
-		*/ 
+
 		return ret;
 	}
 	
@@ -98,12 +98,15 @@ public class MbC_CH {
 			}		
 		}
 		
-		System.out.println("For m="+m+" found a="+a+" and b="+b);
+		//System.out.println("For m="+m+" found a="+a+" and b="+b);
 		
 		Point2D left = null;
 		Point2D right = null;
 		for(Point2D p : pList) {
-			if(p.y == a * p.x + b) {
+			float y = a * p.x + b;
+			if(p.y == y
+				|| (p.y < y && p.y + ERROR_MARGIN >= y)
+				|| (p.y > y && p.y - ERROR_MARGIN <= y)) {
 				if(left == null || p.x < left.x) {
 					left = p;
 				}
@@ -181,8 +184,145 @@ public class MbC_CH {
 	
 	public ArrayList<Point2D> findLowerHull(ArrayList<Point2D> pList) {
 		
+		// Use selection to find median element with value m
+		Selection select = new Selection();
+		int goal = pList.size() / 2;
+		if(pList.size() % 2 != 0) goal = goal + 1;
+		float m = select.select(pList, goal);
+		
+		// Split into left and right according to the median
+		ArrayList<Point2D> leftList = new ArrayList<Point2D>();
+		ArrayList<Point2D> rightList = new ArrayList<Point2D>();
+		for(Point2D p : pList) {
+			if(p.x <= m) leftList.add(p);
+			else rightList.add(p);
+		}	
+		
+		ArrayList<Point2D> bridge = lp2Lower(pList, m);
+		Point2D left = bridge.get(0);
+		Point2D right = bridge.get(1);
+		
+		//System.out.println("Found bridge between "+left.id+ " and "+right.id);
+		
+		// Prune all points above the bridge
+		for(Point2D p : pList) {
+			if(p.x >= left.x && p.id != left.id && p.x <= m) leftList.remove(p);
+			if(p.x > m && p.id != right.id && p.x <= right.x ) {
+				rightList.remove(p);
+			}
+		}		
 		
 		ArrayList<Point2D> ret = new ArrayList<Point2D>();
+		if(leftList.size() == 1) {
+			//System.out.println("Added "+left.id);
+			ret.add(left);
+		}
+		else {
+			//System.out.println("Recursing left on size "+leftList.size()+" for "+left.id);
+			ret.addAll(findLowerHull(leftList));
+		}
+		if(rightList.size() == 1) {
+			//System.out.println("Added "+right.id);
+			ret.add(right);
+		}
+		else {
+			//System.out.println("Recursing right on size "+rightList.size() +" for "+right.id);
+			ret.addAll(findLowerHull(rightList));
+		}
+
 		return ret;
+	}
+	
+	public ArrayList<Point2D> lp2Lower(ArrayList<Point2D> pList, float m) {
+		
+		float a = 0;
+		float b = 0;
+		for(int i = 0; i < pList.size(); i++) {
+			Point2D p = pList.get(i);
+			// Initialize
+			if(i == 0) {
+				Point2D ab = lp1Lower(pList,i,p,m);
+				a = ab.x;
+				b = ab.y;
+			}
+			else {
+				if(p.y >= (a * p.x + b)) {
+					// Nothing
+				}
+				else {
+					// P violates a,b but luckily the new a,b
+					// is on the line symbolized by p
+					Point2D ab = lp1Lower(pList,i,p,m);
+					a = ab.x;
+					b = ab.y;
+				}
+			}		
+		}
+		
+		//System.out.println("For m="+m+" found a="+a+" and b="+b);
+		
+		Point2D left = null;
+		Point2D right = null;
+		for(Point2D p : pList) {
+			float y = a * p.x + b;
+			if(p.y == y
+				|| (p.y < y && p.y + ERROR_MARGIN >= y)
+				|| (p.y > y && p.y - ERROR_MARGIN <= y)) {
+				if(left == null || p.x < left.x) {
+					left = p;
+				}
+				if(right == null || p.x > right.x) {
+					right = p;
+				}
+			}
+		}
+		
+		ArrayList<Point2D> ret = new ArrayList<Point2D>();
+		ret.add(left);
+		ret.add(right);
+		return ret;
+	}
+	
+	public Point2D lp1Lower(ArrayList<Point2D> pList, int n, Point2D p, float m) {
+		
+		// b = a * -x + y
+		float x = p.x * -1;
+		float y = p.y;
+		
+		float vmin = 100;
+		float vmax = -100;
+		// Run through all the points, making lines that represents them
+		// Find the intersections of these lines with our main line
+		// Update vmin and vmax as we go
+		for(int i = 0; i < n; i++) {
+			Point2D point = pList.get(i);
+			float pX = point.x * -1;
+			float pY = point.y;
+			
+			// a = (y - pY) / (pX - x)
+			float intersection = (y - pY) / (pX - x);
+			//System.out.println("Intersection found "+intersection);
+			if(point.x > p.x && intersection < vmin) vmin = intersection;
+			else if(point.x < p.x && intersection > vmax) vmax = intersection;
+
+		}
+		
+		// Determine which of vmax and vmin minimizes	
+		// C = a * m + b
+		//System.out.println("Max="+vmax);
+		//System.out.println("Min="+vmin);
+		float bmin = vmin*x+y;
+		float bmax = vmax*x+y;
+		float cMin = vmin * m + bmin;
+		float cMax = vmax * m + bmax;
+		//System.out.println("CMax="+cMax);
+		//System.out.println("CMin="+cMin);
+		
+		Point2D ret;
+		if(cMin < cMax) ret = new Point2D(vmax,bmax,1);
+		else ret = new Point2D(vmin,bmin,1);
+		
+		return ret;
+		
 	}
 }
