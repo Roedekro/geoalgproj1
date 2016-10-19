@@ -1,11 +1,12 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 public class QH_CH {
 
 	
-	public ArrayList<Point2D> findHull(ArrayList<Point2D> p) {
+	public ArrayList<Point2D> findHull(List<Point2D> p) {
 		
 		// Sort to find smallest and largest x
 		//Arrays.sort(p);
@@ -47,7 +48,7 @@ public class QH_CH {
 		
 	}
 	
-	public ArrayList<Point2D> QuickUpperHull(Point2D p1, Point2D p2, ArrayList<Point2D> p) {
+	public ArrayList<Point2D> QuickUpperHull(Point2D p1, Point2D p2, List<Point2D> p) {
 		
 		//System.out.println("Upper Hull for p1= "+p1.id+" and p2="+p2.id);
 		
@@ -149,7 +150,7 @@ public class QH_CH {
 		
 	}
 	
-	public ArrayList<Point2D> QuickLowerHull(Point2D p1, Point2D p2, ArrayList<Point2D> p) {
+	public ArrayList<Point2D> QuickLowerHull(Point2D p1, Point2D p2, List<Point2D> p) {
 		
 		ArrayList<Point2D> ret = new ArrayList<Point2D>();
 		

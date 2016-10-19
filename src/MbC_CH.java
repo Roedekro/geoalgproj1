@@ -1,9 +1,10 @@
 import java.util.ArrayList;
+import java.util.List;
 
 
 public class MbC_CH {
 
-	public ArrayList<Point2D> findHull(ArrayList<Point2D> pList) {
+	public ArrayList<Point2D> findHull(List<Point2D> pList) {
 		
 		ArrayList<Point2D> upper = findUpperHull(pList);
 		/*ArrayList<Point2D> lower = findLowerHull(pList);
@@ -13,7 +14,7 @@ public class MbC_CH {
 		return upper;
 	}
 	
-	public ArrayList<Point2D> findUpperHull(ArrayList<Point2D> pList) {
+	public ArrayList<Point2D> findUpperHull(List<Point2D> pList) {
 		
 		// Use selection to find median element with value m
 		Selection select = new Selection();
@@ -43,7 +44,7 @@ public class MbC_CH {
 			}
 		}		
 		
-		// MULIGT PROBLEM - ER BROEN TILFØJET ELLER TIL STEDE I BEGGE? Fixed, tror jeg.
+		// MULIGT PROBLEM - ER BROEN TILFï¿½JET ELLER TIL STEDE I BEGGE? Fixed, tror jeg.
 		ArrayList<Point2D> ret = new ArrayList<Point2D>();
 		if(leftList.size() == 1) {
 			System.out.println("Added "+left.id);
@@ -72,7 +73,7 @@ public class MbC_CH {
 	
 	
 	
-	public ArrayList<Point2D> lp2(ArrayList<Point2D> pList, float m) {
+	public ArrayList<Point2D> lp2(List<Point2D> pList, float m) {
 		
 		float a = 0;
 		float b = 0;
@@ -136,7 +137,7 @@ public class MbC_CH {
 	 * This is all bounded by a=-100 to a=100.
 	 */
 	
-	public Point2D lp1(ArrayList<Point2D> pList, int n, Point2D p, float m) {
+	public Point2D lp1(List<Point2D> pList, int n, Point2D p, float m) {
 		
 		// b = a * -x + y
 		float x = p.x * -1;
@@ -179,7 +180,7 @@ public class MbC_CH {
 		
 	}
 	
-	public ArrayList<Point2D> findLowerHull(ArrayList<Point2D> pList) {
+	public ArrayList<Point2D> findLowerHull(List<Point2D> pList) {
 		
 		
 		ArrayList<Point2D> ret = new ArrayList<Point2D>();
