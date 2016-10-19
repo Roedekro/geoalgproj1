@@ -27,16 +27,22 @@ public class Point2D implements Comparable<Point2D> {
 
 		Point2D point2D = (Point2D) o;
 
-		if (Float.compare(point2D.x, x) != 0) return false;
-		return Float.compare(point2D.y, y) == 0;
+		return id == point2D.id;
 
 	}
 
 	@Override
 	public int hashCode() {
-		int result = (x != +0.0f ? Float.floatToIntBits(x) : 0);
-		result = 31 * result + (y != +0.0f ? Float.floatToIntBits(y) : 0);
-		return result;
+		return id;
+	}
+
+	@Override
+	public String toString() {
+		return "Point2D{" +
+				"x=" + x +
+				", y=" + y +
+				", id=" + id +
+				'}';
 	}
 
 }
