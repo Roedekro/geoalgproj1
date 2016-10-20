@@ -21,7 +21,7 @@ public class Main {
 		System.out.println("Welcome to our Convex Hull program");
 		System.out.println("The syntax is as follows:");
 		System.out.println("Generate n - Generate all test files up to size n");
-		System.out.println("<test> <filename> <n> - Run test A/B/C/etc.");
+		System.out.println("<test> <filename> <n> - Run test A/B/C/G");
 		System.out.println("With filename as input, and optinal n");
 		System.out.println("If n is given then the test will read n lines from input");
 		System.out.println("Otherwhise the entire file will be used as input");
@@ -86,7 +86,7 @@ public class Main {
 				}
 				else if(s[0].equals("c")) {
 					long time = System.currentTimeMillis();
-					MbC_CH mbc = new MbC_CH();
+					MbC2_CH mbc = new MbC2_CH();
 					ArrayList<Point2D> ret = mbc.findHull(input);
 					time = System.currentTimeMillis() - time;
 					System.out.println("MbC_CH took " + time + " milliseconds to complete");
