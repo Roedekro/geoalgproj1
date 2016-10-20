@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 public class MbC_CH {
@@ -7,7 +8,7 @@ public class MbC_CH {
 	// Tried 0.00001, but didnt work. Also tried 0.00005 and 0.0001
 	public float ERROR_MARGIN = 0.001f;
 	
-	public ArrayList<Point2D> findHull(ArrayList<Point2D> pList) {
+	public ArrayList<Point2D> findHull(List<Point2D> pList) {
 		
 		ArrayList<Point2D> upper = findUpperHull(pList);
 		//System.out.println("LOWER HULL! ===========");
@@ -19,7 +20,7 @@ public class MbC_CH {
 		return upper;
 	}
 	
-	public ArrayList<Point2D> findUpperHull(ArrayList<Point2D> pList) {
+	public ArrayList<Point2D> findUpperHull(List<Point2D> pList) {
 		
 		// Use selection to find median element with value m
 		Selection select = new Selection();
@@ -72,7 +73,7 @@ public class MbC_CH {
 	
 	
 	
-	public ArrayList<Point2D> lp2(ArrayList<Point2D> pList, float m) {
+	public ArrayList<Point2D> lp2(List<Point2D> pList, float m) {
 		
 		float a = 0;
 		float b = 0;
@@ -139,7 +140,7 @@ public class MbC_CH {
 	 * This is all bounded by a=-100 to a=100.
 	 */
 	
-	public Point2D lp1(ArrayList<Point2D> pList, int n, Point2D p, float m) {
+	public Point2D lp1(List<Point2D> pList, int n, Point2D p, float m) {
 		
 		// b = a * -x + y
 		float x = p.x * -1;
@@ -182,7 +183,7 @@ public class MbC_CH {
 		
 	}
 	
-	public ArrayList<Point2D> findLowerHull(ArrayList<Point2D> pList) {
+	public ArrayList<Point2D> findLowerHull(List<Point2D> pList) {
 		
 		// Use selection to find median element with value m
 		Selection select = new Selection();
@@ -198,7 +199,7 @@ public class MbC_CH {
 			else rightList.add(p);
 		}	
 		
-		ArrayList<Point2D> bridge = lp2Lower(pList, m);
+		List<Point2D> bridge = lp2Lower(pList, m);
 		Point2D left = bridge.get(0);
 		Point2D right = bridge.get(1);
 		
@@ -233,7 +234,7 @@ public class MbC_CH {
 		return ret;
 	}
 	
-	public ArrayList<Point2D> lp2Lower(ArrayList<Point2D> pList, float m) {
+	public ArrayList<Point2D> lp2Lower(List<Point2D> pList, float m) {
 		
 		float a = 0;
 		float b = 0;
@@ -283,7 +284,7 @@ public class MbC_CH {
 		return ret;
 	}
 	
-	public Point2D lp1Lower(ArrayList<Point2D> pList, int n, Point2D p, float m) {
+	public Point2D lp1Lower(List<Point2D> pList, int n, Point2D p, float m) {
 		
 		// b = a * -x + y
 		float x = p.x * -1;

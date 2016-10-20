@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 
 
 public class Selection {
@@ -8,7 +9,7 @@ public class Selection {
 	// Goal is in this case always size/2 rounded down,
 	// also known as the median, but the implementation
 	// works for any i.
-	public float select(ArrayList<Point2D> pList, int goal) {
+	public float select(List<Point2D> pList, int goal) {
 		
 		if(pList.size() == 1) {
 			return pList.get(0).x;
@@ -50,7 +51,7 @@ public class Selection {
 	// Median of medians guarantees between a 30/70 split and a 70/30 split.
 	// Runs in linear time. The recursion T(n) = T(n/5) + O(n) solves to
 	// O(n) by case 3 of the master theorem.
-	public float medianOfMedians(ArrayList<Point2D> pList) {
+	public float medianOfMedians(List<Point2D> pList) {
 		
 		// If size <= 5 sort and return median
 		if(pList.size() <= 5) {

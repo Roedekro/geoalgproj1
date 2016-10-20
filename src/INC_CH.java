@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 
 public class INC_CH {
@@ -11,7 +12,7 @@ public class INC_CH {
 	 * Return an arraylist of the points making up the convex hull,
 	 * in clockwhise order.
 	 */
-	public ArrayList<Point2D> findHull (ArrayList<Point2D> input) {
+	public ArrayList<Point2D> findHull (List<Point2D> input) {
 		
 		// 1. Sort the points by x-coordinate (y-coordinate if same x)
 		// Arrays.sort uses merge-sort in O(n log n).
