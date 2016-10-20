@@ -21,10 +21,11 @@ public class Main {
 		System.out.println("Welcome to our Convex Hull program");
 		System.out.println("The syntax is as follows:");
 		System.out.println("Generate n - Generate all test files up to size n");
-		System.out.println("<test> <filename> <n> - Run test A/B/C/etc.");
-		System.out.println("With filename as input, and optinal n");
+		System.out.println("<test> <filename> <n> <r> - Run test A/B/C/G");
+		System.out.println("With filename as input, and optinal n & r");
 		System.out.println("If n is given then the test will read n lines from input");
 		System.out.println("Otherwhise the entire file will be used as input");
+		System.out.println("If r is given the test will be run r times");
 		System.out.println("Generated tests are named test1.txt, test2.txt and test3.txt");
 		System.out.println("Type Exit to exit");
 		System.out.println("Enjoy!");
@@ -56,48 +57,76 @@ public class Main {
 				// Get filename
 				String filename = s[1];
 				ArrayList<Point2D> input = openFile(filename);
+				int r = 1;
 				// Trim input length if n is given
-				if(s.length == 3) {
+				if(s.length >= 3) {
 					int n = Integer.parseInt(s[2]);
 					int j = input.size();
 					for(int i = j; i  > n; i--) {
 						input.remove(i-1);
 					}
 				}
+				if(s.length == 4) {
+					r = Integer.parseInt(s[3]);
+				}
 				
 				
 				if(s[0].equals("a")) {
 					
-					long time = System.currentTimeMillis();
-					INC_CH inc = new INC_CH();
-					ArrayList<Point2D> ret = inc.findHull(input);
-					time = System.currentTimeMillis() - time;
-					System.out.println("INC_CH took " + time + " milliseconds to complete");
+					long totalTime = 0;
+					ArrayList<Point2D> ret = null;
+					for(int i = 0; i < r; i++) {
+						long time = System.currentTimeMillis();
+						INC_CH inc = new INC_CH();
+						ret = inc.findHull(input);
+						time = System.currentTimeMillis() - time;
+						totalTime = totalTime + time;
+					}				
+					totalTime = totalTime / r;
+					System.out.println("INC_CH took " + totalTime + " milliseconds to complete");
 					outFile(ret,"incChOutput.txt");
 				}
 				else if(s[0].equals("b")) {
 					
-					long time = System.currentTimeMillis();
-					QH_CH qh = new QH_CH();
-					ArrayList<Point2D> ret = qh.findHull(input);
-					time = System.currentTimeMillis() - time;
-					System.out.println("QH_CH took " + time + " milliseconds to complete");
+					long totalTime = 0;
+					ArrayList<Point2D> ret = null;
+					for(int i = 0; i < r; i++) {
+						long time = System.currentTimeMillis();
+						QH_CH qh = new QH_CH();
+						ret = qh.findHull(input);
+						time = System.currentTimeMillis() - time;
+						totalTime = totalTime + time;
+					}				
+					totalTime = totalTime / r;
+					System.out.println("QH_CH took " + totalTime + " milliseconds to complete");
 					outFile(ret,"qhChOutput.txt");
 				}
 				else if(s[0].equals("c")) {
-					long time = System.currentTimeMillis();
-					MbC_CH mbc = new MbC_CH();
-					ArrayList<Point2D> ret = mbc.findHull(input);
-					time = System.currentTimeMillis() - time;
-					System.out.println("MbC_CH took " + time + " milliseconds to complete");
+					long totalTime = 0;
+					ArrayList<Point2D> ret = null;
+					for(int i = 0; i < r; i++) {
+						long time = System.currentTimeMillis();
+						MbC2_CH mbc2 = new MbC2_CH();
+						ret = mbc2.findHull(input);
+						time = System.currentTimeMillis() - time;
+						totalTime = totalTime + time;
+					}				
+					totalTime = totalTime / r;
+					System.out.println("MbC_CH took " + totalTime + " milliseconds to complete");
 					outFile(ret,"MbCOutput.txt");
 				}
 				
 				else if(s[0].equals("g")) {
-					long time = System.currentTimeMillis();
-					List<Point2D> ret = CSY_CH.findHull(input);
-					time = System.currentTimeMillis() - time;
-					System.out.println("CSY_CH took " + time + " milliseconds to complete");
+					long totalTime = 0;
+					List<Point2D> ret = null;
+					for(int i = 0; i < r; i++) {
+						long time = System.currentTimeMillis();
+						ret = CSY_CH.findHull(input);
+						time = System.currentTimeMillis() - time;
+						totalTime = totalTime + time;
+					}				
+					totalTime = totalTime / r;
+					System.out.println("CSY_CH took " + totalTime + " milliseconds to complete");
 					outFile(ret, "csyChOutput.txt");
 
 				}	
