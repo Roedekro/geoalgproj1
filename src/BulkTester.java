@@ -33,7 +33,7 @@ public class BulkTester {
             "test3 avg(ms)",
             "test3 std.dev(ms)",
         };
-        //bw.write(String.join(",", header) + "\r\n");
+        bw.write(String.join(",", header) + "\r\n");
 
         // Read in the input sizes
         int[] inputSizes = new int[args.length-2];
@@ -149,7 +149,7 @@ public class BulkTester {
                 Double.toString(test3Avg),
                 Double.toString(test3StdDev)
             };
-            //bw.write(String.join(",", line) + "\r\n");
+            bw.write(String.join(",", line) + "\r\n");
         }
 
         // Close the file
