@@ -84,7 +84,7 @@ public class CSY_CH {
             // Check which list the point should be partitioned into
             if (pointInP.x < maxPoint.x) {
                 leftPoints.add(pointInP);
-            } else if (pointInP.x >= maxPoint.x) {
+            } else if (pointInP.x > maxPoint.x) {
                 rightPoints.add(pointInP);
             }
         }
