@@ -121,7 +121,7 @@ public class Main {
 					List<Point2D> ret = null;
 					for(int i = 0; i < r; i++) {
 						long time = System.currentTimeMillis();
-						ret = CSY_CH.findHull(input);
+						ret = CSY_CH2.findHull(input);
 						time = System.currentTimeMillis() - time;
 						totalTime = totalTime + time;
 					}				

@@ -112,17 +112,17 @@ public class BulkTester {
                     test3Results[j] = test3Time;
                 } else if (algorithm.equals("g")) {
                     long test1StartTime = System.currentTimeMillis();
-                    CSY_CH.findHull(test1Input);
+                    CSY_CH2.findHull(test1Input);
                     long test1Time = System.currentTimeMillis() - test1StartTime;
                     test1Results[j] = test1Time;
 
                     long test2StartTime = System.currentTimeMillis();
-                    CSY_CH.findHull(test2Input);
+                    CSY_CH2.findHull(test2Input);
                     long test2Time = System.currentTimeMillis() - test2StartTime;
                     test2Results[j] = test2Time;
 
                     long test3StartTime = System.currentTimeMillis();
-                    CSY_CH.findHull(test3Input);
+                    CSY_CH2.findHull(test3Input);
                     long test3Time = System.currentTimeMillis() - test3StartTime;
                     test3Results[j] = test3Time;
                 }
