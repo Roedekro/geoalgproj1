@@ -170,8 +170,10 @@ public class CSY_CH2 {
         for (int i = 0; i < numbers.length; i++) {
             numberList.add(new Point2D(numbers[i], 0, i));
         }
+        int goal = numberList.size() / 2;
+        if(numberList.size() % 2 != 0) goal = goal + 1;
 
-        return selection.medianOfMedians(numberList);
+        return selection.select(numberList, goal);
     }
 
     /**
