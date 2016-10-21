@@ -2,6 +2,8 @@ import java.util.*;
 
 public class CSY_CH2 {
 
+    private static final Selection selection = new Selection();
+
     public static List<Point2D> findHull(List<Point2D> points) {
         // Get the left-most and right-most points
         Point2D minPoint = getLeftMostPoint(points);
@@ -163,16 +165,13 @@ public class CSY_CH2 {
      * @return The median of the array.
      */
     private static float getMedian(float[] numbers) {
-        Arrays.sort(numbers);
-
-        float median;
-        if (numbers.length % 2 == 0) {
-            median = (numbers[numbers.length / 2] + numbers[(numbers.length - 1) / 2]) / 2;
-        } else {
-            median = numbers[numbers.length / 2];
+        // Convert each number to a pair with the x-coordinate representing the number
+        List<Point2D> numberList = new ArrayList<>();
+        for (int i = 0; i < numbers.length; i++) {
+            numberList.add(new Point2D(numbers[i], 0, i));
         }
 
-        return median;
+        return selection.medianOfMedians(numberList);
     }
 
     /**
