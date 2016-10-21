@@ -102,10 +102,18 @@ public class CSY_CH2 {
         // Prune the left points for the largest points in pairs with
         // slopes smaller than the median slope
         List<Point2D> prunedLeftPoints = new ArrayList<>(leftPoints);
+        boolean[] leftSkips = new boolean[leftPoints.size()];
         for (int i = 0; i < leftPoints.size() - 1; i++) {
+            // Skip if the point has been pruned
+            if (leftSkips[i]) continue;
+
             for (int j = i + 1; j < leftPoints.size(); j++) {
+                // Skip if the point has been pruned
+                if (leftSkips[j]) continue;
+
                 Pair pair = new Pair(leftPoints.get(i), leftPoints.get(j));
                 if (pair.getSlope() < medianSlope) {
+                    leftSkips[leftPoints.indexOf(pair.getLargestPoint())] = true;
                     prunedLeftPoints.remove(pair.getLargestPoint());
                 }
             }
@@ -114,10 +122,18 @@ public class CSY_CH2 {
         // Prune the right points for the smallest points in pairs with
         // slopes larger than the median slope
         List<Point2D> prunedRightPoints = new ArrayList<>(rightPoints);
+        boolean[] rightSkips = new boolean[rightPoints.size()];
         for (int i = 0; i< rightPoints.size() - 1; i++) {
+            // Skip if the point has been pruned
+            if (rightSkips[i]) continue;
+
             for (int j = i +1; j < rightPoints.size(); j++) {
+                // Skip if the point has been pruned
+                if (rightSkips[j]) continue;
+
                 Pair pair = new Pair(rightPoints.get(i), rightPoints.get(j));
                 if (pair.getSlope() > medianSlope) {
+                    rightSkips[rightPoints.indexOf(pair.getSmallestPoint())] = true;
                     prunedRightPoints.remove(pair.getSmallestPoint());
                 }
             }
