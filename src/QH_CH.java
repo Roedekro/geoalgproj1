@@ -6,10 +6,12 @@ import java.util.List;
 public class QH_CH {
 
 	
-	public ArrayList<Point2D> findHull(List<Point2D> p) {
+	public ArrayList<Point2D> findHull(ArrayList<Point2D> input) {
 		
 		// Sort to find smallest and largest x
 		//Arrays.sort(p);
+		@SuppressWarnings("unchecked")
+		ArrayList<Point2D> p = (ArrayList<Point2D>) input.clone();
 		
 		Collections.sort(p);
 		
@@ -93,12 +95,12 @@ public class QH_CH {
 			}
 		}
 		
-		p.remove(max);
-		p.removeAll(remove);
 		
 		// Done?
 		if(max == null) return ret;
 		
+		p.remove(max);
+		p.removeAll(remove);
 		//System.out.println("Found max="+max.id +" for p1="+p1.id+" and p2="+p2.id);
 		
 		// Calculate the line from p1 to max, and from max to p2
@@ -139,10 +141,12 @@ public class QH_CH {
 		
 		// Add it all up, recurse if necessary
 		ret.add(max);
-		if(left.size() > 0) {
+		if(left.size() == 1) ret.add(left.get(0));
+		else if(left.size() > 0) {
 			ret.addAll(QuickUpperHull(p1, max, left));
 		}
-		if(right.size() > 0) {
+		if(right.size() == 1) ret.add(right.get(0));
+		else if(right.size() > 0) {
 			ret.addAll(QuickUpperHull(max, p2, right));
 		}
 		
@@ -191,11 +195,10 @@ public class QH_CH {
 			}
 		}
 		
-		p.remove(max);
-		p.removeAll(remove);
-		
 		// Done?
 		if(max == null) return ret;
+		p.remove(max);
+		p.removeAll(remove);
 		
 		// Calculate the line from p1 to max, and from max to p2
 		float maxa1 = (max.y-p1.y) / (max.x - p1.x);
@@ -229,10 +232,12 @@ public class QH_CH {
 		
 		// Add it all up, recurse if necessary
 		ret.add(max);
-		if(left.size() > 0) {
+		if(left.size() == 1) ret.add(left.get(0));
+		else if(left.size() > 0) {
 			ret.addAll(QuickLowerHull(p1, max, left));
 		}
-		if(right.size() > 0) {
+		if(right.size() == 1) ret.add(right.get(0));
+		else if(right.size() > 0) {
 			ret.addAll(QuickLowerHull(max, p2, right));
 		}
 		

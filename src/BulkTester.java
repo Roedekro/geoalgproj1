@@ -80,17 +80,17 @@ public class BulkTester {
                     QH_CH qh = new QH_CH();
 
                     long test1StartTime = System.currentTimeMillis();
-                    qh.findHull(test1Input);
+                    qh.findHull((ArrayList<Point2D>) test1Input);
                     long test1Time = System.currentTimeMillis() - test1StartTime;
                     test1Results[j] = test1Time;
 
                     long test2StartTime = System.currentTimeMillis();
-                    qh.findHull(test2Input);
+                    qh.findHull((ArrayList<Point2D>) test2Input);
                     long test2Time = System.currentTimeMillis() - test2StartTime;
                     test2Results[j] = test2Time;
 
                     long test3StartTime = System.currentTimeMillis();
-                    qh.findHull(test3Input);
+                    qh.findHull((ArrayList<Point2D>) test3Input);
                     long test3Time = System.currentTimeMillis() - test3StartTime;
                     test3Results[j] = test3Time;
                 } else if (algorithm.equals("c")) {

@@ -15,9 +15,14 @@ public class Selection {
 			return pList.get(0).x;
 		}
 		
+		if(pList.size() <= 5) {
+			Collections.sort(pList);
+			return pList.get(goal-1).x;
+		}
+		
 		// Find the median of median, which guarantees a 30/70 to 70/30 split
 		float split = medianOfMedians(pList);
-		//System.out.println(split);
+		//System.out.println(split + " " + pList.size());
 		
 		// Partition the points into <= split and > split.
 		ArrayList<Point2D> left = new ArrayList<Point2D>();
